@@ -1,0 +1,20 @@
+#card{
+    background-color: rgb(87, 255, 227);
+    width: 300px;
+    height: 400px;
+    margin: 5px;
+    border-radius: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content:flex-end;
+}
+
+#card:hover{
+    cursor: pointer;
+    background-color: hsl(170, 100%, 77%);
+}
+
+#card img{
+    width: 450px;
+}
