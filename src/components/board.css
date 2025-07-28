@@ -1,5 +1,5 @@
 #cardBoard{
-    background-color: rgb(255, 127, 127); /*Background-Color for testing purposes*/
+    /*background-color: rgb(255, 127, 127); Background-Color for testing purposes*/
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
