@@ -2,47 +2,51 @@ import Card from './card.jsx';
 import React, { useRef, useState, useEffect } from 'react';
 import './board.css';
 
-function board(){
+function Board(){
 
-    const [sprite, setSprite] = useState(null);
-    const [pkmnName, setPkmnName] = useState(null);
-    const [difficulty, setDifficulty] = useState("Easy"); //16 for 4x4 (Medium)/ 36 for 6x6 (Hard)
-                                                        //Adding difficulty after, for now hardcode Medium
+    const [cardArr, setCardArr] = useState([]);
 
-    fetch('https://pokeapi.co/api/v2/pokemon/pikachu')
-        .then(response => {
-            if(!response.ok){
-                throw new Error(`HTTP Error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            setSprite(data.sprites.front_default);
-            setPkmnName(data.name);
-        })
-        .catch(error => console.error('Error:', error));
+
+    async function createCard (pkmnName){        
+        try{
+            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pkmnName}`);
+                if(!response.ok){
+                    throw new Error(`HTTP Error! Status: ${response.status}`);
+                }
+            const cardData = await response.json();
+            return {
+                sprite: cardData.sprites.front_default,
+                pkmnName: cardData.name
+            };
+
+        } catch(error){ 
+            console.error('Error:', error);
+            return null;
+        }
+    }
+
+    useEffect(() => 
+    {
+        async function getAllCards()
+        {
+            const names = ["pikachu", "bulbasaur", "squirtle", "charmander", "chikorita", "cyndaquil", "totodile", "bidoof"];
+            const allCards = await Promise.all(
+                names.flatMap(name => [createCard(name), createCard(name)])
+            );
+            const shuffled = allCards.sort(() => Math.random() - 0.5); //Choose a simpler shuffle pattern rather then one like the fisher-yates shuffle (for now at least)
+            setCardArr(shuffled);
+        }
+
+        getAllCards();
+    }, [])
 
     return(<div id='cardBoard'>
-    <Card sprite={sprite} pkmnName={pkmnName}/>
-    <Card sprite={sprite} pkmnName={pkmnName}/>
-    <Card sprite={sprite} pkmnName={pkmnName}/>
-    <Card sprite={sprite} pkmnName={pkmnName}/>
 
-    <Card sprite={sprite} pkmnName={pkmnName}/>
-    <Card sprite={sprite} pkmnName={pkmnName}/>
-    <Card sprite={sprite} pkmnName={pkmnName}/>
-    <Card sprite={sprite} pkmnName={pkmnName}/>
-    
-    <Card sprite={sprite} pkmnName={pkmnName}/>
-    <Card sprite={sprite} pkmnName={pkmnName}/>
-    <Card sprite={sprite} pkmnName={pkmnName}/>
-    <Card sprite={sprite} pkmnName={pkmnName}/>
+        {cardArr.map((card, index) => (
+            <Card sprite={card.sprite} pkmnName={card.pkmnName} key={index}/>
+        ))}
 
-    <Card sprite={sprite} pkmnName={pkmnName}/>
-    <Card sprite={sprite} pkmnName={pkmnName}/>
-    <Card sprite={sprite} pkmnName={pkmnName}/>
-    <Card sprite={sprite} pkmnName={pkmnName}/>
     </div>);
 }
 
-export default board;
+export default Board;
