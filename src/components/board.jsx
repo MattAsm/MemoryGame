@@ -9,6 +9,7 @@ function Board(){
     const [firstPick, setFirstPick] = useState(null);
     const [secondPick, setSecondPick] = useState(null);
     const [disabled, setDisabled] =  useState(false);
+    const [isTimerRunning, setIsTimerRunning] = useState(true);
 
     async function createCard (pkmnName){        
         try{
@@ -30,6 +31,16 @@ function Board(){
             return null;
         }
     }
+
+    useEffect(() => {
+        if(cardArr.length === 0) return;
+
+        const cardCheck = cardArr.filter((card) => !card.isMatched);
+        if(cardCheck.length === 0){
+            console.log("Winner!");
+            setIsTimerRunning(false);
+        }
+    }, [cardArr]);
 
     useEffect(() => 
     {
@@ -111,9 +122,12 @@ function Board(){
             isFlipped={card.isFlipped || card.isMatched}/>
         ))}
 
-        <Timer />
+        <Timer isTimerRunning={isTimerRunning}/>
 
-        <button onClick={restart} id='restartButton'>Restart</button>
+        <div id="centeringDiv">
+            <button onClick={restart} id='restartButton'>Restart</button>
+        </div>
+        
     </div>);
 }
 
