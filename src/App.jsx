@@ -8,6 +8,7 @@ function App() {
       <h1 style={{fontSize: '5rem'}}>Pokemon Memory Game</h1>
 
       <Board />
+      
     </div>
   )
 }

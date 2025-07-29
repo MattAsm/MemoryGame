@@ -1,6 +1,7 @@
 import Card from './card.jsx';
 import React, { useRef, useState, useEffect } from 'react';
 import './board.css';
+import Timer from './timer.jsx';
 
 function Board(){
 
@@ -94,6 +95,11 @@ function Board(){
     setDisabled(false);
   }
 
+  function restart(){
+    window.location.reload(); //For now just refreshing the page. 
+    // I Should have everything set up in a way that I can reset the values without refreshing the page eventually
+  }
+
     return(<div id='cardBoard'>
 
         {cardArr.map(card => (
@@ -105,6 +111,9 @@ function Board(){
             isFlipped={card.isFlipped || card.isMatched}/>
         ))}
 
+        <Timer />
+
+        <button onClick={restart} id='restartButton'>Restart</button>
     </div>);
 }
 
