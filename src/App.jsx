@@ -5,7 +5,7 @@ function App() {
 
   return (
     <div>
-      <h1 style={{fontSize: '5rem'}}>Pokemon Memory Game</h1>
+      <h1 style={{fontSize: '2.5rem'}}>Pokemon Memory Game</h1>
 
       <Board />
       
