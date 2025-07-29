@@ -1,3 +1,11 @@
+Try it out at:<br>
+https://mattasm.github.io/MemoryGame/
+<br>
+Or check out my full portfolio at:<br>
+https://mattasm.github.io/
+
+
+<hr>
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
