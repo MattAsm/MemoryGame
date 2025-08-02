@@ -3,24 +3,26 @@ import './timer.css';
 
 function Timer({ isTimerRunning }){
 
-    const [startTime, setStartTime] = useState(Date.now());
+    const startTimeRef = useRef(Date.now());
     const [timePassed, setTimePassed] = useState(0);
 
     useEffect(() =>{
         if(!isTimerRunning){
             return;
         }
-        else{
+
+        startTimeRef.current = Date.now();
+        setTimePassed(0);
+
        const timeTracker = setInterval(() => {
-            const newTimePassed = Date.now() - startTime;
-            setTimePassed(newTimePassed);
+            setTimePassed(Date.now() - startTimeRef.current);
         }, 10)
 
         return () => {
             clearInterval(timeTracker);
         };
-    }
-   });
+
+   }, [isTimerRunning]);
     
     function timeDisplay(){
         let minutes = Math.floor(timePassed / (1000 * 60));

@@ -3,13 +3,13 @@ import React, { useRef, useState, useEffect } from 'react';
 import './board.css';
 import Timer from './timer.jsx';
 
-function Board(){
+function Board({ difficulty, setDifficulty }){
 
     const [cardArr, setCardArr] = useState([]);
     const [firstPick, setFirstPick] = useState(null);
     const [secondPick, setSecondPick] = useState(null);
     const [disabled, setDisabled] =  useState(false);
-    const [isTimerRunning, setIsTimerRunning] = useState(true);
+    const [isTimerRunning, setIsTimerRunning] = useState(false);
 
     async function createCard (pkmnName){        
         try{
@@ -42,20 +42,47 @@ function Board(){
         }
     }, [cardArr]);
 
+
     useEffect(() => 
     {
         async function getAllCards()
         {
-            const names = ["pikachu", "bulbasaur", "squirtle", "charmander", "chikorita", "cyndaquil", "totodile", "bidoof"];
+            let names = [];
+            switch(difficulty){
+                case 'Easy':
+                    document.querySelector('#root').style.setProperty('--board-width', '640px');
+                    names = ["totodile", "bulbasaur", "squirtle", "charmander", 
+                             "chikorita", "cyndaquil"];
+                    break;
+
+                case 'Medium':
+                    document.querySelector('#root').style.setProperty('--board-width', '640px');
+                    names = ["pichu", "ivysaur", "wartortle", "charmeleon", 
+                             "bayleef", "quilava", "croconaw", "bidoof"];
+                    break;
+                
+                case 'Hard':
+                    document.querySelector('#root').style.setProperty('--board-width', '800px');
+                    names = ["pikachu", "venusaur", "blastoise", "charizard", 
+                             "meganium", "typhlosion", "feraligatr", "bibarel", "plusle", "minun"];  
+                    break;
+
+                default: //In case I miss spell something, or the code breaks for some reason, we default to medium
+                    document.querySelector('#root').style.setProperty('--board-width', '640px');
+                    names = ["pichu", "ivysaur", "wartortle", "charmeleon", 
+                             "bayleef", "quilava", "croconaw", "bidoof"];
+                    break;
+            }
             const allCards = await Promise.all(
                 names.flatMap(name => [createCard(name), createCard(name)])
             );
             const shuffled = allCards.sort(() => Math.random() - 0.5); //Chose a simpler shuffle pattern rather then one like the fisher-yates shuffle (for now at least)
             setCardArr(shuffled);
         }
-
+        setIsTimerRunning(false);
         getAllCards();
-    }, [])
+    }, [difficulty])
+
 
     useEffect(() => {
        if(firstPick && secondPick){
@@ -90,6 +117,10 @@ function Board(){
             return;
         }
 
+        if(!isTimerRunning){
+            setIsTimerRunning(true);
+        }
+
         const flippedCard = {...clickedCard, isFlipped: true};
         setCardArr(prev => prev.map(card => card.id === clickedCard.id ? flippedCard : card));
 
@@ -107,8 +138,7 @@ function Board(){
   }
 
   function restart(){
-    window.location.reload(); //For now just refreshing the page. 
-    // I Should have everything set up in a way that I can reset the values without refreshing the page eventually
+    location.reload();
   }
 
     return(<div id='cardBoard'>
@@ -125,7 +155,7 @@ function Board(){
         <Timer isTimerRunning={isTimerRunning}/>
 
         <div id="centeringDiv">
-            <button onClick={restart} id='restartButton'>Restart</button>
+            <button onClick={restart} id='restartButton'>Restart</button> {/*WIP: All it does rn is refresh the page*/} 
         </div>
         
     </div>);
