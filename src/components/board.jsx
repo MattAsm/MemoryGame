@@ -138,7 +138,8 @@ function Board({ difficulty, setDifficulty }){
   }
 
   function restart(){
-    location.reload();
+    location.reload(); //WIP: All it does rn is refresh the page
+    //The goal is to restart the board without needing to re-render the page
   }
 
     return(<div id='cardBoard'>
@@ -155,7 +156,7 @@ function Board({ difficulty, setDifficulty }){
         <Timer isTimerRunning={isTimerRunning}/>
 
         <div id="centeringDiv">
-            <button onClick={restart} id='restartButton'>Restart</button> {/*WIP: All it does rn is refresh the page*/} 
+            <button onClick={restart} id='restartButton'>Restart</button>
         </div>
         
     </div>);

@@ -3,6 +3,9 @@
   max-width: var(--board-width);
   margin: 0 auto;
   text-align: center;
+
+  display: flex;
+  flex-direction: column;
 }
 
 button{
@@ -12,6 +15,13 @@ button{
   border: none;
   border-radius: 7px;
   background-color:rgb(0, 238, 255);
+}
+
+
+main{
+  min-height: 89dvh; /*For some reason my vh is 89,
+  thought this was supposed to be 100 for max view height but that goes way over*/
+  flex: 1;
 }
 
 /*  Theres got to be an easier way to do this 😅  */
